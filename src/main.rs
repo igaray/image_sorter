@@ -61,13 +61,11 @@ fn main() {
         .arg(undo_arg)
         .get_matches();
 
-    let workdir: &Path;
-    if args.is_present("path") {
-        workdir = Path::new(args.value_of("path").unwrap());
-    }
-    else {
-        workdir = Path::new("./");
-    }
+    let workdir = if args.is_present("path") {
+            Path::new(args.value_of("path").unwrap())
+        } else {
+            Path::new("./")
+        };
 
     for entry in WalkDir::new(workdir) {
         process_entry(&args, &workdir, &entry.unwrap().path())
